@@ -1,0 +1,38 @@
+.outer-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  margin: 2rem 0;
+  padding: 0.5rem 0;
+}
+
+.chart-container {
+  display: inline-flex;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+.spreads-heading {
+  font-weight: 500;
+  color: #cbd5e1;
+  margin: 2rem 0;
+}
+
+.confirmed-chart-container {
+  background-color: #331427;
+}
+
+.active-chart-container {
+  background-color: #132240;
+}
+
+.recovered-chart-container {
+  background-color: #182829;
+}
+
+.deceased-chart-container {
+  background-color: #1c1c2b;
+}
+
+.tested-chart-container {
+  background-color: #230f41;
+}
