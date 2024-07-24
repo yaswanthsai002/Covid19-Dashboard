@@ -36,12 +36,15 @@ export default class StateSpecificTimelines extends Component {
     const {stateCode} = stateDetails
     try {
       const timeLinesResponse = await fetch(
-        `https://apis.ccbp.in/covid19-timelines-data/${stateCode}`,
+        `https://apis.ccbp.in/covid19-timelines-data`,
       )
       if (timeLinesResponse.ok) {
         const timelinesJsonResponse = await timeLinesResponse.json()
-        console.log('State Timelines response \n', timelinesJsonResponse)
-        const {dates, districts} = timelinesJsonResponse[stateCode]
+        console.log(
+          'State Timelines response \n',
+          timelinesJsonResponse[stateCode],
+        )
+        const {dates} = timelinesJsonResponse[stateCode]
         const monthsList = [
           'Jan',
           'Feb',
@@ -72,24 +75,23 @@ export default class StateSpecificTimelines extends Component {
           }
         })
         console.log('State Dates List', stateDatesList)
-        const districtsDatesList = Object.keys(districts).map(eachDistrict => {
-          const {dates} = districts[eachDistrict]
-          const datesList = Object.keys(dates).map(eachDate => {
-            const {total} = dates[eachDate]
-            return {
-              date: eachDate,
-              confirmed: total.confirmed || 0,
-              active: total.confirmed - (total.recovered + total.deceased) || 0,
-              recovered: total.recovered || 0,
-              deceased: total.deceased || 0,
-              tested: total.tested || 0,
-            }
-          })
-          return {district: eachDistrict, datesList}
-        })
+        // const districtsDatesList = Object.keys(districts).map(eachDistrict => {
+        //   const {dates} = districts[eachDistrict]
+        //   const datesList = Object.keys(dates).map(eachDate => {
+        //     const {total} = dates[eachDate]
+        //     return {
+        //       date: eachDate,
+        //       confirmed: total.confirmed || 0,
+        //       active: total.confirmed - (total.recovered + total.deceased) || 0,
+        //       recovered: total.recovered || 0,
+        //       deceased: total.deceased || 0,
+        //       tested: total.tested || 0,
+        //     }
+        //   })
+        //   return {district: eachDistrict, datesList}
+        // })
         this.setState({
           stateDatesList,
-          districtsDatesList,
           apiStatus: apiStatusConstants.success,
         })
       }
@@ -204,7 +206,7 @@ export default class StateSpecificTimelines extends Component {
               fill={fillColor}
               barSize={50}
               label={
-                <CustomLabel fill={fillColor} position={top} offset={10} />
+                <CustomLabel fill={fillColor} position="top" offset={10} />
               }
               radius={[8, 8, 0, 0]}
             />

@@ -28,8 +28,8 @@ export default class About extends Component {
       const response = await fetch('https://apis.ccbp.in/covid19-faqs')
       if (response.ok) {
         const jsonResponse = await response.json()
-        const {factoids, faq} = jsonResponse
-        this.setState({apiStatus: apiStatusConstants.success, factoids, faq})
+        const {faq} = jsonResponse
+        this.setState({apiStatus: apiStatusConstants.success, faq})
       } else {
         this.setState({apiStatus: apiStatusConstants.failure})
       }

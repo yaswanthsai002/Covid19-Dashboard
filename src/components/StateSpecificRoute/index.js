@@ -38,18 +38,20 @@ export default class StateSpecificRoute extends Component {
       if (response.ok) {
         const jsonResponse = await response.json()
         const {statesList} = this.context
-        const {districts, meta, total} = jsonResponse[stateCode]
+        const {districts, meta, total: stateTotal} = jsonResponse[stateCode]
         const districtsList = Object.keys(districts).map(eachDistrict => {
-          const {total} = districts[eachDistrict]
+          const {total: districtTotal} = districts[eachDistrict]
           return {
             districtName: eachDistrict,
-            confirmed: total.confirmed || 0,
-            active: total.confirmed - (total.recovered + total.deceased) || 0,
-            recovered: total.recovered || 0,
-            deceased: total.deceased || 0,
+            confirmed: districtTotal.confirmed || 0,
+            active:
+              districtTotal.confirmed -
+                (districtTotal.recovered + districtTotal.deceased) || 0,
+            recovered: districtTotal.recovered || 0,
+            deceased: districtTotal.deceased || 0,
           }
         })
-        const {last_updated, tested} = meta
+        const {last_updated: lastUpdated, tested} = meta
         const {date} = tested
         const monthsList = [
           'January',
@@ -65,10 +67,10 @@ export default class StateSpecificRoute extends Component {
           'November',
           'December',
         ]
-        const lastUpdated = new Date(last_updated)
-        const formattedDate = lastUpdated.getDate()
-        const formattedMonth = monthsList[lastUpdated.getMonth()]
-        const formattedYear = lastUpdated.getFullYear()
+        const lastUpdatedDate = new Date(lastUpdated)
+        const formattedDate = lastUpdatedDate.getDate()
+        const formattedMonth = monthsList[lastUpdatedDate.getMonth()]
+        const formattedYear = lastUpdatedDate.getFullYear()
 
         const testedDate = new Date(date)
         const formattedTestedDate = testedDate.getDate()
@@ -84,12 +86,13 @@ export default class StateSpecificRoute extends Component {
           stateImageUrl: stateObject.state_image_url,
           stateCode,
           districtsList,
-          confirmedCasesCount: total.confirmed || 0,
+          confirmedCasesCount: stateTotal.confirmed || 0,
           activeCasesCount:
-            total.confirmed - (total.recovered + total.deceased) || 0,
-          recoveredCasesCount: total.recovered || 0,
-          deceasedCasesCount: total.deceased || 0,
-          tested: total.tested || 0,
+            stateTotal.confirmed -
+              (stateTotal.recovered + stateTotal.deceased) || 0,
+          recoveredCasesCount: stateTotal.recovered || 0,
+          deceasedCasesCount: stateTotal.deceased || 0,
+          tested: stateTotal.tested || 0,
           population: meta.population || 0,
           lastUpdated: `${formattedMonth} ${formattedDate}, ${formattedYear}`,
           testedDate: `${formattedTestedMonth} ${formattedTestedDate} ${formattedTestedYear}`,
@@ -190,7 +193,7 @@ export default class StateSpecificRoute extends Component {
             </div>
             <div className="tested-details-container">
               <p className="tested-text">Tested</p>
-              <h1 className="tested-value">{confirmedCasesCount}</h1>
+              <h1 className="tested-value">{tested}</h1>
             </div>
           </div>
           <div className="state-stats-container">
@@ -199,7 +202,7 @@ export default class StateSpecificRoute extends Component {
               return (
                 <button
                   key={button.type}
-                  className="state-stat-container-btn"
+                  className="state-stat-container"
                   onClick={() => this.setFilter(button.type)}
                 >
                   <div
