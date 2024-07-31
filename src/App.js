@@ -2,6 +2,7 @@ import {Switch, Route, Redirect} from 'react-router-dom'
 import {useState} from 'react'
 import Home from './components/Home'
 import About from './components/About'
+import Vaccination from './components/Vaccination'
 import StateSpecificRoute from './components/StateSpecificRoute'
 import NotFound from './components/NotFound'
 import AppContext from './context/AppContext'
@@ -232,11 +233,11 @@ const navTabsList = [
     navTabDisplayText: 'Home',
     navTo: '/',
   },
-  {
-    navTabId: 'VACCINATION',
-    navTabDisplayText: 'Vaccination',
-    navTo: '/vaccination',
-  },
+  // {
+  //   navTabId: 'VACCINATION',
+  //   navTabDisplayText: 'Vaccination',
+  //   navTo: '/vaccination',
+  // },
   {
     navTabId: 'ABOUT',
     navTabDisplayText: 'About',
@@ -259,6 +260,7 @@ const App = () => {
       <Switch>
         <Route exact index path="/" component={Home} />
         <Route exact path="/about" component={About} />
+        <Route exact path="/vaccination" component={Vaccination} />
         <Route exact path="/state/:stateCode" component={StateSpecificRoute} />
         <Route path="/not-found" component={NotFound} />
         <Redirect to="/not-found" />

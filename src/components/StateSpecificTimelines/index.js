@@ -37,6 +37,9 @@ export default class StateSpecificTimelines extends Component {
     try {
       const timeLinesResponse = await fetch(
         `https://apis.ccbp.in/covid19-timelines-data`,
+        {
+          method: 'GET',
+        },
       )
       if (timeLinesResponse.ok) {
         const timelinesJsonResponse = await timeLinesResponse.json()
@@ -212,7 +215,7 @@ export default class StateSpecificTimelines extends Component {
             />
           </BarChart>
         </div>
-        <div className="spread-trends-container">
+        <div className="spread-trends-container" testid="lineChartsContainer">
           <h1 className="spreads-heading">Daily Spread Trends</h1>
           <div>
             {this.renderLineChart(

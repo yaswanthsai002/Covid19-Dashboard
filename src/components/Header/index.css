@@ -38,6 +38,10 @@
   color: #3b82f6;
 }
 
+.navbar {
+  list-style-type: none;
+}
+
 .desktop-navbar {
   display: flex;
   justify-content: space-between;

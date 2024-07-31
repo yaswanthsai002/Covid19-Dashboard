@@ -34,6 +34,9 @@ export default class StateSpecificRoute extends Component {
     try {
       const response = await fetch(
         `https://apis.ccbp.in/covid19-state-wise-data`,
+        {
+          method: 'GET',
+        },
       )
       if (response.ok) {
         const jsonResponse = await response.json()
@@ -51,8 +54,7 @@ export default class StateSpecificRoute extends Component {
             deceased: districtTotal.deceased || 0,
           }
         })
-        const {last_updated: lastUpdated, tested} = meta
-        const {date} = tested
+        const {last_updated: lastUpdated} = meta
         const monthsList = [
           'January',
           'February',
@@ -72,11 +74,6 @@ export default class StateSpecificRoute extends Component {
         const formattedMonth = monthsList[lastUpdatedDate.getMonth()]
         const formattedYear = lastUpdatedDate.getFullYear()
 
-        const testedDate = new Date(date)
-        const formattedTestedDate = testedDate.getDate()
-        const formattedTestedMonth = monthsList[testedDate.getMonth()]
-        const formattedTestedYear = testedDate.getFullYear()
-
         const stateObject = statesList.find(
           eachState => eachState.state_code === stateCode,
         )
@@ -93,9 +90,7 @@ export default class StateSpecificRoute extends Component {
           recoveredCasesCount: stateTotal.recovered || 0,
           deceasedCasesCount: stateTotal.deceased || 0,
           tested: stateTotal.tested || 0,
-          population: meta.population || 0,
           lastUpdated: `${formattedMonth} ${formattedDate}, ${formattedYear}`,
-          testedDate: `${formattedTestedMonth} ${formattedTestedDate} ${formattedTestedYear}`,
         }
         this.setState({
           stateDetails,
@@ -193,7 +188,7 @@ export default class StateSpecificRoute extends Component {
             </div>
             <div className="tested-details-container">
               <p className="tested-text">Tested</p>
-              <h1 className="tested-value">{tested}</h1>
+              <p className="tested-value">{tested}</p>
             </div>
           </div>
           <div className="state-stats-container">
@@ -217,40 +212,13 @@ export default class StateSpecificRoute extends Component {
                       src={button.imgUrl}
                       alt={`state specific ${button.type} cases pic`}
                     />
-                    <h1 className={`${button.type} cases-count`}>
+                    <p className={`${button.type} cases-count`}>
                       {button.count}
-                    </h1>
+                    </p>
                   </div>
                 </button>
               )
             })}
-          </div>
-          <div className="state-img-and-tested-stats-container">
-            <div className="state-img-container">
-              <img
-                className="state-img"
-                src={stateDetails.stateImageUrl}
-                alt={`${stateDetails.stateName}`}
-              />
-            </div>
-            <div className="population-and-tested-stats-container">
-              <p className="state-ncp-report">NCP report</p>
-              <div className="state-population-and-tested-stats-container">
-                <div className="population-container">
-                  <p className="state-population-text">Population</p>
-                  <h1 className="state-population-value">
-                    {stateDetails.population}
-                  </h1>
-                </div>
-                <div className="tested-container">
-                  <p className="state-tested-text">Tested</p>
-                  <h1 className="state-tested-value">{stateDetails.tested}</h1>
-                  <p className="state-tested-date">
-                    (As of {stateDetails.testedDate} per source)
-                  </p>
-                </div>
-              </div>
-            </div>
           </div>
           <div className="top-districts-container" testid="lineChartsContainer">
             <h1 className={`${filterType} top-districts-heading`}>

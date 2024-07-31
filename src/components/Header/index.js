@@ -39,7 +39,7 @@ export default class Header extends Component {
                     alt="mobile navmenu togglebtn"
                   />
                 </button>
-                <div className="desktop-navbar">
+                <ul className="navbar desktop-navbar">
                   {navTabsList.map(tab => (
                     <Link
                       key={tab.navTabId}
@@ -47,20 +47,20 @@ export default class Header extends Component {
                       className="nav-link"
                       onClick={() => handleSetTab(tab.navTabId)}
                     >
-                      <p
+                      <li
                         className={`nav-tab ${
                           tab.navTabId === activeTab ? 'active-tab' : ''
                         }`}
                       >
                         {tab.navTabDisplayText}
-                      </p>
+                      </li>
                     </Link>
                   ))}
-                </div>
+                </ul>
               </header>
               {showMobileNavbar && (
-                <div className="mobile-navbar">
-                  <div className="navlinks-container">
+                <div className="navbar mobile-navbar">
+                  <ul className="navlinks-container">
                     {navTabsList.map(tab => (
                       <Link
                         key={tab.navTabId}
@@ -68,16 +68,16 @@ export default class Header extends Component {
                         className="nav-link"
                         onClick={() => handleSetTab(tab.navTabId)}
                       >
-                        <p
+                        <li
                           className={`nav-tab mobile-nav-tab ${
                             tab.navTabId === activeTab ? 'active-tab' : ''
                           }`}
                         >
                           {tab.navTabDisplayText}
-                        </p>
+                        </li>
                       </Link>
                     ))}
-                  </div>
+                  </ul>
                   <button
                     type="button"
                     className="mobile-navbar-close-btn"

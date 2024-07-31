@@ -39,7 +39,6 @@ export default class Home extends Component {
       )
       if (response.ok) {
         const jsonResponse = await response.json()
-        console.log('Json Response', jsonResponse)
         this.processData(jsonResponse)
       } else {
         this.setState({apiStatus: apiStatusConstants.failure})
@@ -52,32 +51,35 @@ export default class Home extends Component {
 
   processData = data => {
     const {statesList} = this.context
-    const resultsList = Object.keys(data)
-      .map(eachState => {
-        const stateDetails = data[eachState]
-        if (stateDetails && stateDetails.total) {
-          const {meta, total} = stateDetails
-          const stateNameObject = statesList.find(
-            stateItem => eachState === stateItem.state_code,
-          )
-          if (stateNameObject) {
-            return {
-              stateCode: eachState,
-              stateName: stateNameObject.state_name,
-              confirmed: total.confirmed || 0,
-              deceased: total.deceased || 0,
-              recovered: total.recovered || 0,
-              tested: total.tested || 0,
-              population: meta.population || 0,
-              active:
-                (total.confirmed || 0) -
-                ((total.deceased || 0) + (total.recovered || 0)),
-            }
-          }
+    const resultsList = []
+    Object.keys(data).forEach(keyName => {
+      if (data[keyName]) {
+        const {total} = data[keyName]
+        const confirmed = total.confirmed ? total.confirmed : 0
+        const deceased = total.deceased ? total.deceased : 0
+        const recovered = total.recovered ? total.recovered : 0
+        const tested = total.tested ? total.tested : 0
+        const population = data[keyName].meta.population
+          ? data[keyName].meta.population
+          : 0
+        const stateObject = statesList.find(
+          state => state.state_code === keyName,
+        )
+        if (stateObject) {
+          resultsList.push({
+            stateCode: keyName,
+            stateName: stateObject.state_name,
+            confirmed,
+            deceased,
+            recovered,
+            tested,
+            population,
+            active: confirmed - (deceased + recovered),
+          })
         }
-        return null
-      })
-      .filter(Boolean)
+      }
+    })
+    console.log('Statewise Covid Data Table Results', resultsList)
     this.setState({
       resultsList,
       apiStatus: apiStatusConstants.success,
