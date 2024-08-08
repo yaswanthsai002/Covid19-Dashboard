@@ -79,7 +79,6 @@ export default class Home extends Component {
         }
       }
     })
-    console.log('Statewise Covid Data Table Results', resultsList)
     this.setState({
       resultsList,
       apiStatus: apiStatusConstants.success,
@@ -91,7 +90,7 @@ export default class Home extends Component {
   onSortDescending = () => this.setState({isAscending: false})
 
   renderLoadingView = () => (
-    <div className="loader-container" testid="homeRouteLoader">
+    <div className="loader-container" data-testid="homeRouteLoader">
       <Loader type="TailSpin" color="#007BFF" height="50px" width="50px" />
     </div>
   )
@@ -144,7 +143,7 @@ export default class Home extends Component {
         {filteredStatesList.length > 0 && (
           <ul
             className="search-results-container"
-            testid="searchResultsUnorderedList"
+            data-testid="searchResultsUnorderedList"
           >
             {filteredStatesList.map(eachState => (
               <Link
@@ -168,7 +167,7 @@ export default class Home extends Component {
         <div className="country-stats-container">
           <div
             className="confirmed-cases country-stat-container"
-            testid="countryWideConfirmedCases"
+            data-testid="countryWideConfirmedCases"
           >
             <p className="confirmed stat-name">Confirmed</p>
             <img
@@ -180,7 +179,7 @@ export default class Home extends Component {
           </div>
           <div
             className="active-cases country-stat-container"
-            testid="countryWideActiveCases"
+            data-testid="countryWideActiveCases"
           >
             <p className="active stat-name">Active</p>
             <img
@@ -192,7 +191,7 @@ export default class Home extends Component {
           </div>
           <div
             className="recovered-cases country-stat-container"
-            testid="countryWideRecoveredCases"
+            data-testid="countryWideRecoveredCases"
           >
             <p className="recovered stat-name">Recovered</p>
             <img
@@ -204,7 +203,7 @@ export default class Home extends Component {
           </div>
           <div
             className="deceased-cases country-stat-container"
-            testid="countryWideDeceasedCases"
+            data-testid="countryWideDeceasedCases"
           >
             <p className="deceased stat-name">Deceased</p>
             <img
@@ -217,7 +216,7 @@ export default class Home extends Component {
         </div>
         <div
           className="state-stats-table-container"
-          testid="stateWiseCovidDataTable"
+          data-testid="stateWiseCovidDataTable"
         >
           <ul className="state-stats-table">
             <div className="table-header">
@@ -228,17 +227,19 @@ export default class Home extends Component {
                 <div className="sorting-btns-container">
                   <button
                     type="button"
-                    testid="ascendingSort"
+                    data-testid="ascendingSort"
                     onClick={this.onSortAscending}
                     className="sorting-btn"
+                    aria-label="acending sort button"
                   >
                     <FcGenericSortingAsc className="sort-icon" />
                   </button>
                   <button
                     type="button"
-                    testid="descendingSort"
+                    data-testid="descendingSort"
                     onClick={this.onSortDescending}
                     className="sorting-btn"
+                    aria-label="descending sort button"
                   >
                     <FcGenericSortingDesc className="sort-icon" />
                   </button>

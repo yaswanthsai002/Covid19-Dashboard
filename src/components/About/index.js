@@ -13,7 +13,6 @@ const apiStatusConstants = {
 
 export default class About extends Component {
   state = {
-    factoids: [],
     faq: [],
     apiStatus: apiStatusConstants.initial,
   }
@@ -40,7 +39,7 @@ export default class About extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" testid="aboutRouteLoader">
+    <div className="loader-container" data-testid="aboutRouteLoader">
       <Loader type="TailSpin" color="#007BFF" height="50px" width="50px" />
     </div>
   )
@@ -55,7 +54,7 @@ export default class About extends Component {
           <h1 className="about-sub-heading">
             COVID-19 vaccines be ready for distribution
           </h1>
-          <ul className="faq-list-container" testid="faqsUnorderedList">
+          <ul className="faq-list-container" data-testid="faqsUnorderedList">
             {faq.map(eachFaq => (
               <li className="faq-lst-item" key={eachFaq.qno}>
                 <p className="faq-question">{eachFaq.question}</p>

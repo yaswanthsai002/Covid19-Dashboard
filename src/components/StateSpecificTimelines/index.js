@@ -23,7 +23,6 @@ export default class StateSpecificTimelines extends Component {
   state = {
     apiStatus: apiStatusConstants.initial,
     stateDatesList: [],
-    districtsDatesList: [],
   }
 
   componentDidMount() {
@@ -34,19 +33,14 @@ export default class StateSpecificTimelines extends Component {
     this.setState({apiStatus: apiStatusConstants.loading})
     const {stateDetails} = this.props
     const {stateCode} = stateDetails
+    const fetchApiUrl = 'https://apis.ccbp.in/covid19-timelines-data'
+    const fetchOptions = {
+      method: 'GET',
+    }
     try {
-      const timeLinesResponse = await fetch(
-        `https://apis.ccbp.in/covid19-timelines-data`,
-        {
-          method: 'GET',
-        },
-      )
+      const timeLinesResponse = await fetch(fetchApiUrl, fetchOptions)
       if (timeLinesResponse.ok) {
         const timelinesJsonResponse = await timeLinesResponse.json()
-        console.log(
-          'State Timelines response \n',
-          timelinesJsonResponse[stateCode],
-        )
         const {dates} = timelinesJsonResponse[stateCode]
         const monthsList = [
           'Jan',
@@ -77,22 +71,7 @@ export default class StateSpecificTimelines extends Component {
             tested: total.tested || 0,
           }
         })
-        console.log('State Dates List', stateDatesList)
-        // const districtsDatesList = Object.keys(districts).map(eachDistrict => {
-        //   const {dates} = districts[eachDistrict]
-        //   const datesList = Object.keys(dates).map(eachDate => {
-        //     const {total} = dates[eachDate]
-        //     return {
-        //       date: eachDate,
-        //       confirmed: total.confirmed || 0,
-        //       active: total.confirmed - (total.recovered + total.deceased) || 0,
-        //       recovered: total.recovered || 0,
-        //       deceased: total.deceased || 0,
-        //       tested: total.tested || 0,
-        //     }
-        //   })
-        //   return {district: eachDistrict, datesList}
-        // })
+
         this.setState({
           stateDatesList,
           apiStatus: apiStatusConstants.success,
@@ -105,7 +84,7 @@ export default class StateSpecificTimelines extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" testid="timelinesDataLoader">
+    <div className="loader-container" data-testid="timelinesDataLoader">
       <Loader type="TailSpin" color="#007BFF" height="50px" width="50px" />
     </div>
   )
@@ -215,7 +194,10 @@ export default class StateSpecificTimelines extends Component {
             />
           </BarChart>
         </div>
-        <div className="spread-trends-container" testid="lineChartsContainer">
+        <div
+          className="spread-trends-container"
+          data-testid="lineChartsContainer"
+        >
           <h1 className="spreads-heading">Daily Spread Trends</h1>
           <div>
             {this.renderLineChart(

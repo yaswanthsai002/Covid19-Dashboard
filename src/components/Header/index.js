@@ -22,7 +22,11 @@ export default class Header extends Component {
           return (
             <>
               <header className="header">
-                <Link to="/" className="hed">
+                <Link
+                  to="/"
+                  className="hed"
+                  onClick={() => handleSetTab('HOME')}
+                >
                   <h1 className="website-heading covid19-heading">
                     COVID19
                     <span className="website-heading india-heading">INDIA</span>

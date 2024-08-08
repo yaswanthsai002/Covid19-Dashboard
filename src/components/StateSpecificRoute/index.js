@@ -31,13 +31,12 @@ export default class StateSpecificRoute extends Component {
     const {match} = this.props
     const {params} = match
     const {stateCode} = params
+    const fetchApiUrl = 'https://apis.ccbp.in/covid19-state-wise-data'
+    const fetchOptions = {
+      method: 'GET',
+    }
     try {
-      const response = await fetch(
-        `https://apis.ccbp.in/covid19-state-wise-data`,
-        {
-          method: 'GET',
-        },
-      )
+      const response = await fetch(fetchApiUrl, fetchOptions)
       if (response.ok) {
         const jsonResponse = await response.json()
         const {statesList} = this.context
@@ -118,7 +117,7 @@ export default class StateSpecificRoute extends Component {
   }
 
   renderLoadingView = () => (
-    <div className="loader-container" testid="stateDetailsLoader">
+    <div className="loader-container" data-testid="stateDetailsLoader">
       <Loader type="TailSpin" color="#007BFF" height="50px" width="50px" />
     </div>
   )
@@ -196,6 +195,7 @@ export default class StateSpecificRoute extends Component {
               const isSelected = filterType === button.type
               return (
                 <button
+                  type="button"
                   key={button.type}
                   className="state-stat-container"
                   onClick={() => this.setFilter(button.type)}
@@ -204,7 +204,7 @@ export default class StateSpecificRoute extends Component {
                     className={`state-stat-container state-${button.type} ${
                       isSelected ? `state-${button.type}-active` : ''
                     }`}
-                    testid={button.testid}
+                    data-testid={button.data - button.testid}
                   >
                     <p className={`${button.type} stat-name`}>{button.label}</p>
                     <img
@@ -220,13 +220,13 @@ export default class StateSpecificRoute extends Component {
               )
             })}
           </div>
-          <div className="top-districts-container" testid="lineChartsContainer">
+          <div className="top-districts-container">
             <h1 className={`${filterType} top-districts-heading`}>
               Top Districts
             </h1>
             <ul
               className="top-districts-list"
-              testid="topDistrictsUnorderedList"
+              data-testid="topDistrictsUnorderedList"
             >
               {sortedDistrictsList.map(district => (
                 <li
